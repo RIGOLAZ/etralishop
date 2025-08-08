@@ -1,9 +1,14 @@
 import React from 'react';
-import { useCart } from '../../contexts/CartContext';
+import { useSelector } from 'react-redux';
 import PiCheckout from '../../components/PiCheckout';
+import { useDispatch } from 'react-redux';
 
 const Cart = () => {
-  const { cart, removeFromCart, clearCart, getTotal } = useCart();
+  const cart = useSelector(state => state.cart);
+const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+const dispatch = useDispatch();
+const removeFromCart = id => dispatch({ type: 'cart/removeFromCart', payload: id });
+const clearCart = () => dispatch({ type: 'cart/clearCart' });
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -30,10 +35,10 @@ const Cart = () => {
             ))}
           </div>
 
-          <p className="text-xl font-semibold mt-4">Total : {getTotal()} π</p>
+          <p className="text-xl font-semibold mt-4">Total : {total()} π</p>
 
           <PiCheckout
-            total={getTotal()}
+            total={total()}
             items={cart.map(i => ({ id: i.id, qty: i.qty }))}
             onSuccess={(txid) => {
               alert(`Paiement réussi ! TxID : ${txid}`);
