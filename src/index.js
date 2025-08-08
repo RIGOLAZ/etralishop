@@ -13,8 +13,8 @@ const root = ReactDOMClient.createRoot(container);
 // Initial render: Render an element to the root.
 root.render(
    <React.StrictMode>
-+    <Provider store={store}>
+    <Provider store={store}>
        <App />
-+    </Provider>
+   </Provider>
    </React.StrictMode>
 );
