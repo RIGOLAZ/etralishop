@@ -11,10 +11,13 @@ const cartReducer = (state, action) => {
             i.id === action.payload.id ? { ...i, qty: i.qty + 1 } : i
           )
         : [...state, { ...action.payload, qty: 1 }];
+
     case 'REMOVE':
       return state.filter(i => i.id !== action.payload);
+
     case 'CLEAR':
       return [];
+
     default:
       return state;
   }

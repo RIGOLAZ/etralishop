@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import PiNetwork from '@pinetwork/sdk';
 
 const PiCheckout = ({ total, items, onSuccess }) => {
   const [loading, setLoading] = useState(false);
-  const pi = new PiNetwork();
 
   const handlePayment = async () => {
+    if (!window.Pi) {
+      alert("Utilise le Pi Browser ou l’extension SDK !");
+      return;
+    }
     setLoading(true);
     try {
-      const payment = await pi.createPayment({
+      const payment = await window.Pi.createPayment({
         amount: total,
         memo: 'Achat Etralishop',
         metadata: { items },
       });
-      await pi.submitPayment(payment);
-      const result = await pi.completePayment(payment);
+      await window.Pi.submitPayment(payment);
+      const result = await window.Pi.completePayment(payment);
       onSuccess(result.identifier);
     } catch (err) {
       console.error(err);
